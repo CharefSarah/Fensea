@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Fensea</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body id="main-wrapper">
+
+
+    <div class="blob">
+        <svg xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 310 350">
+            <path
+                d="M156.4,339.5c31.8-2.5,59.4-26.8,80.2-48.5c28.3-29.5,40.5-47,56.1-85.1c14-34.3,20.7-75.6,2.3-111  c-18.1-34.8-55.7-58-90.4-72.3c-11.7-4.8-24.1-8.8-36.8-11.5l-0.9-0.9l-0.6,0.6c-27.7-5.8-56.6-6-82.4,3c-38.8,13.6-64,48.8-66.8,90.3c-3,43.9,17.8,88.3,33.7,128.8c5.3,13.5,10.4,27.1,14.9,40.9C77.5,309.9,111,343,156.4,339.5z" />
+        </svg>
+    </div>
+    <div class="blob2">
+        <svg xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 310 350">
+            <path
+                d="M156.4,339.5c31.8-2.5,59.4-26.8,80.2-48.5c28.3-29.5,40.5-47,56.1-85.1c14-34.3,20.7-75.6,2.3-111  c-18.1-34.8-55.7-58-90.4-72.3c-11.7-4.8-24.1-8.8-36.8-11.5l-0.9-0.9l-0.6,0.6c-27.7-5.8-56.6-6-82.4,3c-38.8,13.6-64,48.8-66.8,90.3c-3,43.9,17.8,88.3,33.7,128.8c5.3,13.5,10.4,27.1,14.9,40.9C77.5,309.9,111,343,156.4,339.5z" />
+        </svg>
+    </div>
+    <div class="main">
+        <div class="text_content">
+            <h1>SALT<br>
+                LEVEL<br>
+                ACTIVATED</h1>
+            <div class="content_form">
+                <h2>GET THE CATALOGUE</h2>
+                <div class="fake_form">
+                    <div class="fake">
+                        <p>Enter your email</p>
+                    </div>
+                    <button>Sing up</button>
+                </div>
+            </div>
+        </div>
+        <p class="cent">100</p>
+        <div class="image_content">
+
+            <canvas id="my-canvas"></canvas>
+            <div class="stickers" id="stickers">
+                <p>New !</p>
+            </div>
+            <img class="star" src="assets/images/Shape-07.png">
+            <img class="crystal" id="crystal" src="assets/images/62aae9c77753582a2b0f34a7_crystal_hero.png">
+
+        </div>
+
+    </div>
+
+
+
+    <script id="vertex" type="x-shader/x-vertex">
+        uniform float u_time;
+      uniform sampler2D u_texture;
+      uniform vec2 u_pixels;
+      uniform int u_distortion;
+      uniform float u_strength;
+      uniform float u_speed;
+      
+      varying vec2 v_uv;
+      varying vec4 v_position;
+      varying float v_progress;
+      
+      void main(){
+      
+          v_uv = uv;
+      
+          float distance = length(v_uv - vec2(0.5));
+          float maxDistance = length(vec2(0.5));
+          float normalizedDistance = distance/maxDistance;
+          vec3 pos = position;
+      
+          switch (u_distortion) {
+              case 1: 
+                  // center Blow In
+                  pos.z = 0.2 *  sin( normalizedDistance * u_strength + 1.0 * u_time * u_speed) * 0.2;
+                  break;
+              case 2: 
+                  // center Blow Out
+                  pos.z = 0.2 *  sin( -normalizedDistance * u_strength + 1.0 * u_time * u_speed) * 0.2;
+                  break;
+              case 3:
+                  // flow Left
+                  pos.z = 0.2 * sin( pos.x  * u_strength + 1.0 * u_time * u_speed) * 0.2;
+                  break;
+              case 4:
+                  // Flow Right
+                  pos.z = 0.2 *  sin( -pos.x * u_strength + 1.0 * u_time * u_speed) * 0.2;
+                  break;
+              case 5:
+                  // Flow down
+                  pos.z = 0.2 *  sin( pos.y  * u_strength + 1.0 * u_time * u_speed) * 0.5;
+                  break;
+              case 6:
+                  // Flow Up
+                  pos.z = 0.2 *  sin( -pos.y  * u_strength + 1.0 * u_time * u_speed) * 0.9;
+                  break;
+              case 7:
+                  // center Blow + flow left
+                  pos.z = 0.2 *  sin( pos.x  * normalizedDistance * u_strength + 1.0 * u_time * u_speed) * 0.2;
+                  break;
+              case 8:
+                  // center Blow + flow right
+                  pos.z = 0.2 *  sin( -pos.x  * normalizedDistance * u_strength + 1.0 * u_time * u_speed) * 0.2;
+                  break;
+              case 9:
+                  // center Blow + flow down
+                  pos.z = 0.2 *  sin( pos.y  * normalizedDistance * u_strength + 1.0 * u_time * u_speed) * 0.2;
+                  break;
+              case 10:
+                  // center Blow + flow up
+                  pos.z = 0.2 *  sin( -pos.y  * normalizedDistance * u_strength + 1.0 * u_time * u_speed) * 0.2;
+                  break;
+          }
+          
+          //pos.z = 0.2 *  sin( pos.y  * normalizedDistance * u_strength + 1.0 * u_time * u_speed) * 0.2;
+          gl_Position = projectionMatrix * modelViewMatrix  * vec4(pos, 1.0)  ;
+          
+      }
+      </script>
+
+    <script id="fragment" type="x-shader/x-fragment">
+        uniform float u_time;
+      uniform vec4 u_resolution;
+      uniform float u_progress;
+      uniform sampler2D u_texture;
+      
+      varying vec2 v_uv;
+      varying vec4 v_position;
+      
+      void main(){
+      
+          gl_FragColor = vec4(texture2D(u_texture, v_uv));
+      
+      }
+      
+      </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r120/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.7/dat.gui.min.js"></script>
+    <script src="assets/js/script.js" async defer></script>
+
+</body>
+
+
+</html>
